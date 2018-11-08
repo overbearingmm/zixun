@@ -1,0 +1,202 @@
+<div id="lanmu">
+	<button class="btn btn-success btn-sm addBtn">新 增</button>
+	<button class="btn btn-danger btn-sm delBtn">批量删除</button>
+
+	<table class="table table-bordered text-center" style=" margin-top: 10px">
+		<tr>
+			<td>编号</td>
+			<td>栏目名称</td>
+			<td>父栏目</td>
+			<td>描述</td>
+			<td>操作</td>
+		</tr>
+		
+		
+	</table>
+
+
+	<!-- 模态框 -->
+	<div class="modal" id="lanmuModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+
+				<div class="modal-header text-center">
+					<div class="backDiv">
+						<i class="iconfont icon-zuo"></i>
+						<span>返回</span>
+					</div>
+					<div class="modal-title">
+						添加栏目
+					</div>
+				</div>
+
+				<div class="modal-body">
+					<form class="form">
+						<div class="form-group">
+							<label for="">栏目名称</label>
+							<input type="text" name="lanmuname" class="form-control">
+						</div>
+
+						<div class="form-group">
+							<label for="">父栏目</label>
+							<select name="lanmuParent"  class="form-control">
+							
+								<option value="">请选择</option>
+								
+							</select>
+						</div>
+
+						<div class="form-group">
+							<label for="">描述</label>
+							<textarea name="lanmuComment" cols="30" rows="3" class="form-control" style="resize: none;"></textarea>
+						</div>
+
+						<div class="form-group hide">
+							<button type="reset">重置</button>
+						</div>
+					</form>
+				</div>
+
+				<div class="modal-footer">
+					<span class="messageSpan"></span>
+					<button class="btn btn-success btn-sm saveBtn">确 认</button>
+					
+					
+				</div>
+
+
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script>
+	$(function(){
+        //所有的栏目
+        var lanmus = [];
+		//设置模态框的高度为浏览器视口
+        $('.modal-content').height($(window).height());
+        //打开模态框
+        $('.addBtn').click(function(){
+        	//清空表单，，清空select里的内容（除了第一行）,从后台获取所有的栏目，追加option，显示模态框
+        	
+          	$('button[type=reset]').trigger('click');
+        	// 清空提示信息
+        	$('.messageSpan').html('');
+
+        	addOption();
+        	
+
+
+
+
+        });
+        $('.backDiv').click(function(){
+        	$('#lanmuModal').hide();
+
+        });
+
+        //保存
+        $('.saveBtn').click(function(){
+        	//获取数据，表单验证，不通过提示用户，如果通过封装对象，传递给后台，保存成功，提示用户，刷新数据，关闭模态框
+        	var lanmuname = $('input[name = categoryName] ').val();
+        	var lanmuParent = $('select[name = categoryParent] ').val();
+        	var lanmuComment = $('textarea[name = categoryComment] ').val();
+        	if(lanmuname && lanmuComment){
+        		//封装数据，保存
+        		var obj = {
+        			name:lanmuname,
+        			comment:lanmuComment,
+        			no:'',
+        			parentId:lanmuParent
+        		};
+        		$.post(baseURL+'/manager/category/saveOrUpdateCategory',obj,function(){
+        			console.log(res,'保存成功');
+        			alert('保存成功');
+        			loadData();
+        			$('#lanmuModal').hide();
+        		});
+
+        	}else{
+        		$('.messageSpan').html('请输入完整的信息');
+        	}
+        });
+
+        //修改
+        $('#lanmu table').on({
+        	click:function(){
+        		//获取当前要修改的id，获取对应对象，给模态框中设置值，模态框显示
+        		//清空提示信息
+        		$('.messageSpan').html();
+        		var id = $(this).closest('tr').find('input[type = checkbox]').val();
+        		var cat = lanmus.filter(function(item){
+        			return item.id == id;
+        		})[0];
+
+
+        	}
+        },'i[title=修改]')
+
+
+
+
+
+		loadData();
+
+		//追加option，显示模态框
+		function addOption(){
+			$('#lanmu select option:not(:first)').remove();
+
+            $.get(baseURL+'/manager/category/findAllCategory',
+				function(res){
+					res.data.forEach(function(item){
+						var $option = $('<option value="'+item.id+'">'+item.name+'</option>');
+						$('#lanmu select').append($option);
+					});
+					$('#lanmuModal').show();
+				});
+
+		}
+
+
+
+		//获取数据
+		function loadData(){
+			// 先删除节点，获取数据，追加节点
+			$('#lanmu table tr:not(:first)').remove();
+			$.get(baseURL+'/manager/category/findAllCategory',function(res){
+				res.data.forEach(function(item){
+					var $tr = $(`<tr>
+						<td><input type="checkbox" value="`+item.id+`"></td>
+						<td>`+item.name+`</td>
+						<td>`+(item.parent?item.parent.name:'-')+`</td>
+						<td>`+item.comment+`</td>
+						<td>
+							<i class="iconfont icon-edit-1-copy" title="修改"></i>
+							<i class="iconfont icon-shanchu" title="删除"></i>
+						</td>
+					</tr>`);
+					$('#lanmu table').append($tr);
+				});
+			});
+		}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		
+	});
+</script>

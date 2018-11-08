@@ -1,0 +1,75 @@
+
+.bg-white{
+	background-color: white;
+}
+.bg-green{
+	background-color:#66bb0d;
+}
+.outerDiv{
+	width: 95%;
+	margin:10px auto 10px;
+	padding-bottom: 10px;
+
+	
+
+}
+.totalDiv{
+	overflow:hidden;
+	padding: 10px;
+	border-radius: 5px;
+	margin-top:10px;
+}
+.totalDiv .iconDiv,.totalDiv .numDiv{
+	float:left; 
+}
+.iconDiv{
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	text-align: center;
+}
+.iconDiv i{
+	line-height: 50px;
+	color:white;
+	font-size: 30px;
+}
+.totalDiv .numDiv{
+	margin-left: 20px;
+	padding-top:5px;
+}
+.numDiv span{
+	font-size: 24px;
+	line-height: 24px;
+	
+}
+.uptimeDiv span:first-child{
+	color: rgb(123,47,191);
+}
+.salesDiv span:first-child{
+	color: rgb(94,168,20);
+}
+.numDiv small{
+	display: block;
+}
+#visContainer{
+	height: 230px;
+	margin-top: 10px;
+}
+.visDiv,.uptimeDiv,.salesDiv{
+	position: relative;
+}
+.visDiv .numDiv,.uptimeDiv .numDiv,.salesDiv .numDiv{
+	position: absolute;
+	top:20px;
+	left: 20px;
+}
+.visDiv span{
+	color:#66bb0d;
+	/*color:#862eb7;*/
+}
+.uptimeDiv,.salesDiv{
+	margin-top: 10px;
+}
+#uptimeContainer,#salesContainer{
+	height: 110px;
+}

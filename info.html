@@ -1,0 +1,109 @@
+<div id="info">
+	<div class="optionDiv">
+		<select name="categoryId">
+			<!-- 从后台获取栏目数据，追加节点 -->
+		</select>
+		<button class="btn btn-success btn-sm addBtn">新 增</button>
+		<button class="btn btn-success btn-sm batchDelBtn">批量删除</button>
+	</div>
+	<table class="table table-bordered text-center">
+		<tr>
+			<td>编号</td>
+			<td>栏目标题</td>
+			<td>所属栏目</td>
+			<td>列表样式</td>
+			<td>作者</td>
+			<td>发布时间</td>
+			<td>阅读次数</td>
+			<td>操作</td>
+		</tr>
+	</table>
+</div>
+<script>
+	$(function(){
+		addCategoryId();
+		//给name=categoryId绑定change事件，当它发生改变的时候，获取值，拿到categoryId,去查找文章
+		$('select[name=categoryId]').change(function(){
+			var id = $(this).val();
+			loadData(id);	
+		});
+		// 给name=categoryId的select添加option,栏目信息
+		function addCategoryId(){
+			$('select[name=categoryId]').empty();
+			$.get(baseURL+'/manager/category/findAllCategory',function(res){
+				res.data.forEach(function(item){
+					var $option = $('<option value="'+item.id+'">'+item.name+'</option>');
+					$('select[name=categoryId]').append($option);
+				});
+				// 通过categoryId来获取对应的文章信息
+				loadData($('select[name=categoryId]').val());
+			});
+		}
+		// categoryId 是栏目id,通过categoryId来查找文章信息，追加节点
+		function loadData(categoryId){
+			$('#info table tr:not(:first)').remove();
+			var obj = {
+				page:0,
+				pageSize:1000,
+				categoryId:categoryId,
+			};
+			$.get(baseURL+'/manager/article/findArticle',obj,function(res){
+				console.log(res);
+				if(res.status==200){
+					// 遍历数据，生成节点
+					if(res.data&&res.data.list){
+						res.data.list.forEach(function(item){
+							var $tr = $(`<tr>
+									<td><input type="checkbox" value="`+item.id+`"></td>
+									<td>`+item.title+`</td>
+									<td>`+item.category.name+`</td>
+									<td>`+item.liststyle+`</td>
+									<td>`+(item.author?item.author:'-')+`</td>
+									<td>`+item.publishtime+`</td>
+									<td>`+item.readtimes+`</td>
+									<td>
+										<i class="iconfont icon-edit-1-copy" title="修改"></i>
+										<i class="iconfont icon-shanchu" title="删除"></i>
+									</td>
+								</tr>`);
+							$('#info table').append($tr);
+						});
+					}
+				}else{
+					console.log(res.message);
+					alert('数据加载失败');
+				}
+			})
+		}
+	});
+</script>
+<style>
+	#info{
+		padding: 10px;
+		background-color: white;
+	}
+	#info .optionDiv{
+		overflow: hidden;
+	}
+	#info .optionDiv *{
+		float: left;
+		margin-right: 5px;
+	}
+	#info .optionDiv select{
+		width: 200px;
+		height: 30px;
+	}
+	#info table{
+		margin-top:10px;
+	}
+	#info table i{
+		cursor: pointer;
+		color:#66bb0d;
+	}
+	#info table i:nth-child(2){
+		color: red;
+	}
+</style>
+
+
+

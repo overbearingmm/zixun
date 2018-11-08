@@ -1,0 +1,92 @@
+.view-zx{
+	background-color: rgb(61,85,109);
+	margin-bottom: 40px;
+	text-align: center;
+}
+
+.container{
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	padding: 0;
+	background-color: rgb(240,240,240);
+
+}
+
+		
+.container>.col-sm-2{
+	padding: 0;
+			
+	position: absolute;
+	top: 0;
+	bottom: 0;
+    background-color: rgb(40,40,48);
+			
+}
+	
+.container>.col-sm-10{
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	padding: 0;
+			
+}
+.view-zx>span{
+	color:white;
+	height: 40px;
+	line-height: 40px;
+}
+
+.view-ol{
+	color:white;
+	
+}
+.view-ol>ol>li{
+	border-bottom: 1px solid rgb(51,51,51);
+	padding: 5px 5px 10px 10px;
+}
+.view-ol>ol>li:hover,.view-zx>span:hover{
+	cursor: pointer;
+}
+.view-ol>ol>li>img:nth-child(1){
+	margin-left: 10px;
+	margin-right: 5px;
+}
+.view-ol>ol>li>img:nth-child(2){
+	position: absolute;
+	right: 20px;
+}
+.nav-t{
+	background-color: white;
+	height: 40px;
+	line-height: 40px;
+	padding-left: 10px;
+	
+}
+.nav-t>img:nth-child(2){
+	margin-left: 30px;
+	position: relative;
+}
+.nav-t>div{
+	position: absolute;
+    text-align: center;
+   line-height: 15px;
+	left: 70px;
+	top: 6px;
+	width: 15px;
+	height: 15px;
+	border-radius: 50%;
+	background-color: red;
+	color: white;
+}
+.col-sm-10{
+	position: relative;
+	overflow: auto;
+}
+.nav-b{
+    
+	margin-top: 10px;
+}
